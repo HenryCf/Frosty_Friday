@@ -1,0 +1,25 @@
+CREATE STAGE FF_1_S3_stage
+URL = 's3://frostyfridaychallenges/challenge_1/';
+
+
+LIST @FF_1_S3_STAGE;
+
+CREATE OR REPLACE FILE FORMAT FF_1_csv_format
+    TYPE = 'CSV'
+    FIELD_DELIMITER = ','
+    SKIP_HEADER = 1
+    EMPTY_FIELD_AS_NULL = false;
+    
+SELECT $1
+FROM @FF_1_S3_STAGE;
+
+CREATE OR REPLACE TABLE FF_1_Table
+(C1 VARCHAR);
+
+COPY INTO FF_1_Table
+    FROM @FF_1_S3_STAGE
+    FILE_FORMAT = 'FF_1_csv_format';
+    
+    
+SELECT * FROM FF_1_TABLE;
+    
